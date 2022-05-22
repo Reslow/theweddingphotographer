@@ -1,20 +1,14 @@
 import { useRef } from "react";
 
 export default function Photo() {
+  const videoReference = useRef();
   const canvas = useRef(null);
-  const camera = useRef(null);
 
-  let stream;
-  const ctx = canvas.getContext("2d");
   async function handleStartCamera() {
-    console.log("click");
     if ("mediaDevices" in navigator) {
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false,
+      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        videoReference.current.srcObject = stream;
       });
-      console.log(stream);
-      camera.srcObject = stream;
     }
   }
 
@@ -24,8 +18,8 @@ export default function Photo() {
         Starta kameran
       </button>
       <button id="take-picture">Ta kort</button>
-      <video src="" id="camera" autoPlay useref={camera}></video>
-      <canvas id="picture" useref={canvas}></canvas>
+      <video src="" id="camera" autoPlay ref={videoReference}></video>
+      <canvas id="picture" ref={canvas}></canvas>
 
       <section>
         <h3>Galleri</h3>

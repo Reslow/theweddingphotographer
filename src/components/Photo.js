@@ -1,9 +1,12 @@
 import { useRef, useState } from "react";
 import ImageElement from "./ImagesElement";
+import FilterControl from "./Filtercontrol";
 
 export default function Photo({ SetImageIsSaved }) {
   const videoReference = useRef();
   const canvasRef = useRef();
+  const [selectedBtn, setSelectedBtn] = useState(null);
+  const [value, setValue] = useState(0);
 
   let itemsInLocalstorage = JSON.parse(localStorage.getItem("cameraApp"));
   console.log(itemsInLocalstorage);
@@ -24,6 +27,7 @@ export default function Photo({ SetImageIsSaved }) {
 
   function handleTakeAPhoto() {
     let video = videoReference.current;
+
     let ctx = canvasRef.current.getContext("2d");
     ctx.drawImage(
       video,
@@ -59,7 +63,25 @@ export default function Photo({ SetImageIsSaved }) {
       <button id="take-picture" onClick={handleTakeAPhoto}>
         Ta kort
       </button>
-      <video src="" id="camera" autoPlay ref={videoReference}></video>
+
+      <section>
+        <video
+          src=""
+          id="camera"
+          autoPlay
+          ref={videoReference}
+          style={{
+            filter: `blur(${value}%)``contrast(${value})``brightness(${value})``saturate(${value})`,
+          }}
+        ></video>
+      </section>
+
+      <FilterControl
+        selectedBtn={selectedBtn}
+        setSelectedBtn={setSelectedBtn}
+        value={value}
+        setValue={setValue}
+      ></FilterControl>
 
       <canvas id="canvas" ref={canvasRef} height="480" width="640"></canvas>
       {takenPhoto && <button onClick={handleSaveImage}>Save</button>}

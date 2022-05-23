@@ -13,7 +13,7 @@ self.addEventListener("activate", () => {
   self.skipWaiting();
   console.log("sw activated", new Date().toLocaleTimeString());
 });
-console.log("då");
+
 // kolla om jag är online eller offline
 
 self.addEventListener("fetch", async (event) => {

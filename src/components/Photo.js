@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import ImageElement from "./ImagesElement";
 
-export default function Photo() {
+export default function Photo({ SetImageIsSaved }) {
   const videoReference = useRef();
   const canvasRef = useRef();
 
@@ -47,6 +47,7 @@ export default function Photo() {
   function handleSaveImage() {
     localStorage.setItem("cameraApp", JSON.stringify(images));
     setImages(JSON.parse(localStorage.getItem("cameraApp")));
+    SetImageIsSaved(true);
   }
 
   console.log(images);

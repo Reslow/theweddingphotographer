@@ -6,10 +6,16 @@ export default function Photo({ SetImageIsSaved }) {
   const videoReference = useRef();
   const canvasRef = useRef();
   const [selectedBtn, setSelectedBtn] = useState(null);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState({
+    contrast: null,
+    saturate: null,
+    hue: null,
+    brightness: null,
+    none: "none",
+  });
 
   let itemsInLocalstorage = JSON.parse(localStorage.getItem("cameraApp"));
-  console.log(itemsInLocalstorage);
+  // console.log(itemsInLocalstorage);
 
   const [images, setImages] = useState(
     itemsInLocalstorage?.length > 0 ? itemsInLocalstorage : []
@@ -54,7 +60,7 @@ export default function Photo({ SetImageIsSaved }) {
     SetImageIsSaved(true);
   }
 
-  console.log(images);
+  // console.log(images);
   return (
     <section>
       <button id="start-camera" onClick={handleStartCamera}>
@@ -65,15 +71,31 @@ export default function Photo({ SetImageIsSaved }) {
       </button>
 
       <section>
-        <video
-          src=""
-          id="camera"
-          autoPlay
-          ref={videoReference}
+        <div
           style={{
-            filter: `blur(${value}%)``contrast(${value})``brightness(${value})``saturate(${value})`,
+            filter: `contrast(${value.contrast}%)`,
           }}
-        ></video>
+        >
+          <div
+            style={{
+              filter: `saturate(${value.saturate}%)`,
+            }}
+          >
+            <div
+              style={{
+                filter: `hue-rotate(${value.hue}deg)`,
+              }}
+            >
+              <div
+                style={{
+                  filter: `brightness(${value.brightness}%)`,
+                }}
+              >
+                <video src="" id="camera" autoPlay ref={videoReference}></video>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <FilterControl

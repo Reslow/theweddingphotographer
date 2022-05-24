@@ -5,36 +5,56 @@ export default function FilterControl({
   setValue,
 }) {
   function handleRange(e) {
-    console.log(e.target.name);
-    setValue(e.target.value);
+    if (selectedBtn === "contrast") {
+      setValue((prev) => ({
+        ...prev,
+        contrast: e.target.value,
+      }));
+    } else if (selectedBtn === "brightness") {
+      setValue((prev) => ({
+        ...prev,
+        brightness: e.target.value,
+      }));
+    } else if (selectedBtn === "hue") {
+      setValue((prev) => ({
+        ...prev,
+        hue: e.target.value,
+      }));
+    } else if (selectedBtn === "saturate") {
+      setValue((prev) => ({
+        ...prev,
+        saturate: e.target.value,
+      }));
+    }
   }
+  console.log(value);
 
   function handleContrastBtn(e) {
-    console.log(e.target.name);
     setSelectedBtn(e.target.name);
   }
-  function handleInvertBtn(e) {
-    console.log(e.target.name);
+  function handleSaturateBtn(e) {
     setSelectedBtn(e.target.name);
   }
-  function handleSaturationBtn(e) {
-    console.log(e.target.name);
+  function handleHueBtn(e) {
     setSelectedBtn(e.target.name);
   }
-  function handleSepiaBtn(e) {
-    console.log(e.target.name);
+  function handleBrightnessBtn(e) {
     setSelectedBtn(e.target.name);
   }
-
-  function handleNoneBtn(e) {
-    console.log(e.target.name);
-    setSelectedBtn(e.target.name);
+  function handleNoneBtn() {
+    setValue((prev) => ({
+      ...prev,
+      contrast: "80",
+      brightness: "100",
+      hue: "0",
+      saturate: "100",
+    }));
   }
 
   return (
     <>
       {selectedBtn ? selectedBtn : "no filter is selected"}
-      {value ? value : ""}
+
       <input
         type="range"
         name="rangeInput"
@@ -45,14 +65,14 @@ export default function FilterControl({
       <button name="contrast" onClick={handleContrastBtn}>
         contrast
       </button>
-      <button name="sepia" onClick={handleSepiaBtn}>
-        blue
+      <button name="saturate" onClick={handleSaturateBtn}>
+        saturate
       </button>
-      <button name="saturation" onClick={handleSaturationBtn}>
-        saturation
+      <button name="hue" onClick={handleHueBtn}>
+        hue
       </button>
-      <button name="invert" onClick={handleInvertBtn}>
-        pink
+      <button name="brightness" onClick={handleBrightnessBtn}>
+        brightness
       </button>
       <button name="none" onClick={handleNoneBtn}>
         none

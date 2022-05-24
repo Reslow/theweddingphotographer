@@ -17,11 +17,10 @@ self.addEventListener("activate", () => {
 // kolla om jag är online eller offline
 
 self.addEventListener("fetch", async (event) => {
-  console.log(event);
+  console.log(event.request.url);
 
   if (!navigator.onLine) {
     console.log("offline");
-
     event.respondWith(
       caches.match(event.request).then((response) => {
         console.log("response", response);
@@ -34,5 +33,17 @@ self.addEventListener("fetch", async (event) => {
     );
   } else {
     console.log("online");
+    const response = await updateCache(event.request);
+    return response;
   }
 });
+
+async function updateCache(request) {
+  const response = await fetch(request);
+
+  const cache = await caches.open("v1");
+
+  cache.put(request, response.clone());
+
+  return response;
+}

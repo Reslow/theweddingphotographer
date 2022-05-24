@@ -40,6 +40,7 @@ export default function Photo({
     let video = videoReference.current;
 
     let ctx = canvasRef.current.getContext("2d");
+    ctx.filter = `contrast(${value.contrast}%) saturate(${value.saturate}%) hue-rotate(${value.hue}deg) brightness(${value.brightness}%`;
     ctx.drawImage(
       video,
       0,
@@ -70,7 +71,6 @@ export default function Photo({
     }
   }
 
-  // console.log(images);
   return (
     <section>
       <button id="start-camera" onClick={handleStartCamera}>

@@ -27,7 +27,7 @@ export default function FilterControl({
       }));
     }
   }
-  console.log(value);
+  // console.log(value);
 
   function handleContrastBtn(e) {
     setSelectedBtn(e.target.name);

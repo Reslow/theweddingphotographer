@@ -4,7 +4,8 @@ import Photo from "./components/Photo";
 
 function App() {
   const [imageIsSaved, SetImageIsSaved] = useState(false);
-  const [notisBtn, SetNotisBtn] = useState(false);
+  const [notisBtn, SetNotisBtn] = useState(true);
+  const [permission, SetPermission] = useState(false);
 
   function createNotification() {
     const text = "image has been saved!";
@@ -13,7 +14,9 @@ function App() {
 
   function handleNotisButton() {
     SetNotisBtn(!notisBtn);
+    console.log(notisBtn);
     if (notisBtn === true) {
+      console.log("btn");
       handleNotificationPermission();
     }
   }
@@ -21,11 +24,9 @@ function App() {
   function handleNotificationPermission() {
     Notification.requestPermission().then((permission) => {
       console.log(permission);
-      if (permission === "granted" && imageIsSaved === true) {
-        console.log("tjena");
-        createNotification();
+      if (permission === "granted") {
+        SetPermission(true);
       }
-      SetImageIsSaved(false);
     });
   }
 
@@ -36,7 +37,12 @@ function App() {
       </button>
 
       <section>
-        <Photo SetImageIsSaved={SetImageIsSaved} />
+        <Photo
+          SetImageIsSaved={SetImageIsSaved}
+          ImageIsSaved={imageIsSaved}
+          permission={permission}
+          createNotification={createNotification}
+        />
       </section>
     </div>
   );

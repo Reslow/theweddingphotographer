@@ -2,7 +2,12 @@ import { useRef, useState } from "react";
 import ImageElement from "./ImagesElement";
 import FilterControl from "./Filtercontrol";
 
-export default function Photo({ SetImageIsSaved }) {
+export default function Photo({
+  SetImageIsSaved,
+  ImageIsSaved,
+  permission,
+  createNotification,
+}) {
   const videoReference = useRef();
   const canvasRef = useRef();
   const [selectedBtn, setSelectedBtn] = useState(null);
@@ -55,9 +60,14 @@ export default function Photo({ SetImageIsSaved }) {
   }
 
   function handleSaveImage() {
+    console.log("saved");
     localStorage.setItem("cameraApp", JSON.stringify(images));
     setImages(JSON.parse(localStorage.getItem("cameraApp")));
     SetImageIsSaved(true);
+    console.log(ImageIsSaved);
+    if (permission) {
+      createNotification();
+    }
   }
 
   // console.log(images);

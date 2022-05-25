@@ -21,21 +21,23 @@ self.addEventListener("fetch", async (event) => {
 
   if (!navigator.onLine) {
     console.log("offline");
-    event.respondWith(
-      caches.match(event.request).then((response) => {
-        console.log("response", response);
-        if (response) {
-          return response;
-        } else {
-          return caches.match(new Request("offline.html"));
-        }
-      })
-    );
-  } else {
-    console.log("online");
-    const response = await updateCache(event.request);
-    return response;
-  }
+    if (event.request === "GET") {
+      event.respondWith(
+        caches.match(event.request).then((response) => {
+          console.log("response", response);
+          if (response) {
+            return response;
+          } else {
+            return caches.match(new Request("offline.html"));
+          }
+        })
+      );
+    } else {
+      console.log("online");
+      const response = await updateCache(event.request);
+      return response;
+    }
+  } else return;
 });
 
 async function updateCache(request) {

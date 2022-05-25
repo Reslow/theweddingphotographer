@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./App.css";
-import Photo from "./components/Photo";
+import { Routes, Route } from "react-router-dom";
+import Gallery from "./components/views/Gallery";
+import Home from "./components/views/Home";
 
 function App() {
   const [imageIsSaved, SetImageIsSaved] = useState(false);
@@ -35,15 +37,20 @@ function App() {
       <button onClick={handleNotisButton}>
         {notisBtn === true ? "slå på notiser" : "stäng av notiser"}
       </button>
-
-      <section>
-        <Photo
-          SetImageIsSaved={SetImageIsSaved}
-          ImageIsSaved={imageIsSaved}
-          permission={permission}
-          createNotification={createNotification}
-        />
-      </section>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              imageIsSaved={imageIsSaved}
+              SetImageIsSaved={SetImageIsSaved}
+              permission={permission}
+              createNotification={createNotification}
+            />
+          }
+        ></Route>
+        <Route path="/gallery" element={<Gallery />}></Route>
+      </Routes>
     </div>
   );
 }

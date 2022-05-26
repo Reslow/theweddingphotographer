@@ -1,32 +1,30 @@
-import { useState, useEffect } from "react";
-import Intro from "../Intro";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import Photo from "../views/Photo";
 
-export default function Home({ permission, createNotification, setCaptured }) {
-  const [showApp, setShowApp] = useState(false);
+export default function Home({
+  permission,
+  createNotification,
+  setCaptured,
+  images,
+  setImages,
+}) {
   const [imageIsSaved, SetImageIsSaved] = useState(false);
-
-  // set true after 3 min
-  useEffect(() => {
-    setInterval(() => {
-      setShowApp(true);
-    }, 3000);
-  }, []);
-  console.log(showApp);
 
   return (
     <div>
-      {showApp ? (
-        <Photo
-          SetImageIsSaved={SetImageIsSaved}
-          ImageIsSaved={imageIsSaved}
-          permission={permission}
-          createNotification={createNotification}
-          setCaptured={setCaptured}
-        />
-      ) : (
-        <Intro />
-      )}
+      <Link to="/gallery" className="nav">
+        <img src="/gallery.svg" alt="nav" />
+      </Link>
+      <Photo
+        SetImageIsSaved={SetImageIsSaved}
+        ImageIsSaved={imageIsSaved}
+        permission={permission}
+        createNotification={createNotification}
+        setCaptured={setCaptured}
+        images={images}
+        setImages={setImages}
+      />
     </div>
   );
 }

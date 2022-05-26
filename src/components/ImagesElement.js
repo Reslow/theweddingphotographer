@@ -13,9 +13,11 @@ export default function ImageElement({ image, images, setImages }) {
   }
 
   return (
-    <section>
-      <img src={image} alt="a" />
-      <button onClick={handleRemoveImage}>remove</button>
+    <section className="img-display">
+      <img src={image} alt="a" width="100%" />
+      <button onClick={handleRemoveImage} className="delete">
+        <img src="/close-outline.png" alt="close" />
+      </button>
     </section>
   );
 }

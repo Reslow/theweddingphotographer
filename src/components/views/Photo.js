@@ -1,50 +1,43 @@
 import { useRef, useState, useEffect } from "react";
-import ImageElement from "../ImagesElement";
-import FilterControl from "../Filtercontrol";
+// import ImageElement from "../ImagesElement";
+// import FilterControl from "../Filtercontrol";
 
 export default function Photo({
   SetImageIsSaved,
-  ImageIsSaved,
   permission,
   createNotification,
+  images,
+  setImages,
 }) {
   const videoReference = useRef();
   const canvasRef = useRef();
-  const [selectedBtn, setSelectedBtn] = useState(null);
+  // const [selectedBtn, setSelectedBtn] = useState(null);
   const [takenPhoto, setTakenPhoto] = useState(false);
 
   useEffect(() => {
-    setTakenPhoto(false);
-  }, []);
-
-  const [value, setValue] = useState({
-    contrast: null,
-    saturate: null,
-    hue: null,
-    brightness: null,
-    none: "none",
-  });
-
-  let itemsInLocalstorage = JSON.parse(localStorage.getItem("cameraApp"));
-  // console.log(itemsInLocalstorage);
-
-  const [images, setImages] = useState(
-    itemsInLocalstorage?.length > 0 ? itemsInLocalstorage : []
-  );
-
-  async function handleStartCamera() {
     if ("mediaDevices" in navigator) {
       navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
         videoReference.current.srcObject = stream;
       });
     }
-  }
+    setTakenPhoto(false);
+  }, []);
+
+  // const [value, setValue] = useState({
+  //   contrast: null,
+  //   saturate: null,
+  //   hue: null,
+  //   brightness: null,
+  //   none: "none",
+  // });
 
   function handleTakeAPhoto() {
     let video = videoReference.current;
     let ctx = canvasRef.current.getContext("2d");
     console.log(ctx);
-    ctx.filter = `contrast(${value.contrast}%) saturate(${value.saturate}%) hue-rotate(${value.hue}deg) brightness(${value.brightness}%`;
+
+    // video.addEventListener("load", (e) => {
+    // ctx.filter = `contrast(${value.contrast}%) saturate(${value.saturate}%) hue-rotate(${value.hue}deg) brightness(${value.brightness}%)`;
 
     ctx.drawImage(
       video,
@@ -53,24 +46,25 @@ export default function Photo({
       canvasRef.current.height,
       canvasRef.current.width
     );
+    // });
 
     const imageData = canvasRef.current?.toDataURL("image/png");
+    console.log(imageData);
+    console.log(images);
 
     images.push({
       id: images.length,
       image: imageData,
     });
     setImages(images);
-
     setTakenPhoto(true);
   }
-  console.log(canvasRef.current);
+  // console.log(canvasRef.current);
   function handleSaveImage() {
-    console.log("saved");
     setImages(JSON.parse(localStorage.getItem("cameraApp")));
     localStorage.setItem("cameraApp", JSON.stringify(images));
     SetImageIsSaved(true);
-    console.log(ImageIsSaved);
+
     if (permission) {
       createNotification();
     }
@@ -78,85 +72,56 @@ export default function Photo({
 
   return (
     <section>
-      <div>
-        <button id="start-camera" onClick={handleStartCamera}>
-          Starta kameran
-        </button>
-        <button id="take-picture" onClick={handleTakeAPhoto}>
-          Ta kort
-        </button>
-
-        <section>
-          <div
+      <div
+        className="snap"
+        style={{ visibility: takenPhoto ? "hidden" : "visible" }}
+      >
+        {/* <section> */}
+        {/* <div
             style={{
               filter: `contrast(${value.contrast}%)`,
             }}
-          >
-            <div
+          > */}
+        {/* <div
               style={{
                 filter: `saturate(${value.saturate}%)`,
               }}
-            >
-              <div
-                style={{
-                  filter: `hue-rotate(${value.hue}deg)`,
-                }}
               >
-                <div
-                  style={{
-                    filter: `brightness(${value.brightness}%)`,
-                  }}
-                >
-                  <video
-                    src=""
-                    id="camera"
-                    autoPlay
-                    ref={videoReference}
-                    style={{
-                      display: !takenPhoto ? "block" : "none",
-                    }}
-                  ></video>
-                </div>
+              <div
+              style={{
+                filter: `hue-rotate(${value.hue}deg)`,
+              }}
+              >
+              <div
+              style={{
+                filter: `brightness(${value.brightness}%)`,
+              }}
+            > */}
+        <video src="" id="camera" autoPlay ref={videoReference}></video>
+        {/* </div>
               </div>
-            </div>
-          </div>
-        </section>
+              </div>
+              </div>
+            </section> */}
 
-        <FilterControl
+        {/* <FilterControl
           selectedBtn={selectedBtn}
           setSelectedBtn={setSelectedBtn}
           value={value}
           setValue={setValue}
-        ></FilterControl>
+        ></FilterControl> */}
+        <button className="primary" onClick={handleTakeAPhoto}>
+          Ta kort
+        </button>
       </div>
 
-      <div>
-        <canvas
-          id="canvas"
-          ref={canvasRef}
-          height="480"
-          width="640"
-          style={{
-            display: !takenPhoto ? "none" : "block",
-          }}
-        ></canvas>
+      <div
+        className="capture"
+        style={{ visibility: takenPhoto ? "visible" : "hidden" }}
+      >
+        <canvas id="canvas" ref={canvasRef} height="200" width="340"></canvas>
         {takenPhoto && <button onClick={handleSaveImage}>Save</button>}
-        <section>
-          <h3>Galleri</h3>
-          <section id="gallery">
-            {images.length > 0 &&
-              images.map((image, index) => {
-                return (
-                  <ImageElement
-                    image={image.image}
-                    images={images}
-                    key={index}
-                    setImages={setImages}
-                  />
-                );
-              })}
-          </section>
-        </section>
+        <button className="primary">capture new moment</button>
       </div>
     </section>
   );

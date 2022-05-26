@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Gallery from "./components/views/Gallery";
 import Home from "./components/views/Home";
+import Intro from "./components/Intro";
 
 function App() {
   const [imageIsSaved, SetImageIsSaved] = useState(false);
+  const [hideApp, setHideApp] = useState(false);
   const [notisBtn, SetNotisBtn] = useState(true);
   const [permission, SetPermission] = useState(false);
+  let itemsInLocalstorage = JSON.parse(localStorage.getItem("cameraApp"));
+  const [images, setImages] = useState(
+    itemsInLocalstorage?.length > 0 ? itemsInLocalstorage : []
+  );
+  console.log(images);
 
   function createNotification() {
     const text = "image has been saved!";
@@ -32,11 +39,25 @@ function App() {
     });
   }
 
+  // set true after 3 min
+  useEffect(() => {
+    setInterval(() => {
+      setHideApp(true);
+    }, 3000);
+  }, []);
+
+  console.log(hideApp);
   return (
     <div className="App">
-      <button onClick={handleNotisButton}>
-        {notisBtn === true ? "slå på notiser" : "stäng av notiser"}
-      </button>
+      <header className="header">
+        <button
+          onClick={handleNotisButton}
+          className={notisBtn ? "notis--btn--on" : "notis--btn--off"}
+        >
+          {notisBtn === true ? "slå på notiser" : "stäng av notiser"}
+        </button>
+      </header>
+      {!hideApp ? <Intro /> : ""}
       <Routes>
         <Route
           path="/"
@@ -46,10 +67,15 @@ function App() {
               SetImageIsSaved={SetImageIsSaved}
               permission={permission}
               createNotification={createNotification}
+              images={images}
+              setImages={setImages}
             />
           }
         ></Route>
-        <Route path="/gallery" element={<Gallery />}></Route>
+        <Route
+          path="/gallery"
+          element={<Gallery setImages={setImages} />}
+        ></Route>
       </Routes>
     </div>
   );

@@ -119,7 +119,7 @@ export default function Photo({
         className="capture"
         style={{ visibility: takenPhoto ? "visible" : "hidden" }}
       >
-        <canvas id="canvas" ref={canvasRef} height="200" width="340"></canvas>
+        <canvas id="canvas" ref={canvasRef} height="480" width="640"></canvas>
         {takenPhoto && <button onClick={handleSaveImage}>Save</button>}
         <button className="primary">capture new moment</button>
       </div>

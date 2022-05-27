@@ -23,7 +23,7 @@ function App() {
 
   function handleNotisButton() {
     SetNotisBtn(!notisBtn);
-    console.log(notisBtn);
+
     if (notisBtn === true) {
       console.log("btn");
       handleNotificationPermission();
@@ -32,7 +32,7 @@ function App() {
 
   function handleNotificationPermission() {
     Notification.requestPermission().then((permission) => {
-      console.log(permission);
+      // console.log(permission);
       if (permission === "granted") {
         SetPermission(true);
       }
@@ -46,7 +46,6 @@ function App() {
     }, 3000);
   }, []);
 
-  console.log(hideApp);
   return (
     <div className="App">
       <header className="header">
@@ -57,26 +56,29 @@ function App() {
           {notisBtn === true ? "slå på notiser" : "stäng av notiser"}
         </button>
       </header>
-      {!hideApp ? <Intro /> : ""}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              imageIsSaved={imageIsSaved}
-              SetImageIsSaved={SetImageIsSaved}
-              permission={permission}
-              createNotification={createNotification}
-              images={images}
-              setImages={setImages}
-            />
-          }
-        ></Route>
-        <Route
-          path="/gallery"
-          element={<Gallery setImages={setImages} />}
-        ></Route>
-      </Routes>
+      {!hideApp ? (
+        <Intro />
+      ) : (
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home
+                imageIsSaved={imageIsSaved}
+                SetImageIsSaved={SetImageIsSaved}
+                permission={permission}
+                createNotification={createNotification}
+                images={images}
+                setImages={setImages}
+              />
+            }
+          ></Route>
+          <Route
+            path="/gallery"
+            element={<Gallery setImages={setImages} />}
+          ></Route>
+        </Routes>
+      )}
     </div>
   );
 }

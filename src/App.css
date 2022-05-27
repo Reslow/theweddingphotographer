@@ -1,16 +1,14 @@
-body,
-html {
+.App {
   text-align: center;
   background-color: #252424;
   font-family: "Noto Sans", sans-serif;
   min-height: 100vh;
   letter-spacing: 5px;
   color: white;
-  width: 100%;
   margin-left: auto;
   margin-right: auto;
-  padding: 10px;
-  position: relative;
+  position: absolute;
+  width: 100%;
 }
 
 .intro {
@@ -23,6 +21,9 @@ html {
   position: absolute;
   display: flex;
   flex-direction: column;
+  width: 80%;
+  left: 25px;
+  top: 10;
 }
 
 .snap {
@@ -30,15 +31,15 @@ html {
   position: absolute;
   display: flex;
   flex-direction: column;
-  width: 80%;
+  max-width: 90%;
   align-items: center;
   padding: 10px;
-  height: 70%;
+  margin: 0px;
 }
 
 .header {
   align-self: flex-start;
-  width: 50%;
+
   z-index: 0;
   position: absolute;
   display: flex;
@@ -58,15 +59,18 @@ html {
   position: absolute;
   padding: 0px;
   display: flex;
-  right: 30%;
+  right: 0%;
 }
 
 .img-display {
-  width: 45%;
+  width: 90%;
+  height: 100%;
   position: relative;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-around;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .notis--btn--on {
@@ -87,12 +91,36 @@ html {
 
 .primary {
   background-color: rgb(255, 255, 255);
-  width: 100%;
   font-family: "Noto Sans", sans-serif;
   text-transform: uppercase;
-  height: 100px;
-  margin-top: 50%;
+  height: 70px;
   font-weight: bold;
-  position: absolute;
-  bottom: 0px;
+  position: fixed;
+  bottom: 30px;
+  border-radius: 3px;
+  border: none;
+  letter-spacing: 3px;
+  padding: 0px 100px;
+}
+
+#camera {
+  margin: 100px auto auto auto;
+  max-width: 90%;
+  min-width: 60%;
+  max-height: 90%;
+}
+
+/* Gallery */
+
+#gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 10px;
+  gap: 20px;
+  width: 90%;
+}
+
+.home {
+  width: 90%;
+  margin: 0px;
 }

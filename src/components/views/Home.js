@@ -12,10 +12,11 @@ export default function Home({
   const [imageIsSaved, SetImageIsSaved] = useState(false);
 
   return (
-    <div>
+    <div className="home">
       <Link to="/gallery" className="nav">
         <img src="/gallery.svg" alt="nav" />
       </Link>
+
       <Photo
         SetImageIsSaved={SetImageIsSaved}
         ImageIsSaved={imageIsSaved}

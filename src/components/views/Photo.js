@@ -58,16 +58,19 @@ export default function Photo({
     });
     setImages(images);
     setTakenPhoto(true);
-  }
-  // console.log(canvasRef.current);
-  function handleSaveImage() {
+
     setImages(JSON.parse(localStorage.getItem("cameraApp")));
     localStorage.setItem("cameraApp", JSON.stringify(images));
     SetImageIsSaved(true);
 
     if (permission) {
+      console.log("create");
       createNotification();
     }
+  }
+
+  function handleCaptureNew() {
+    setTakenPhoto(false);
   }
 
   return (
@@ -120,8 +123,11 @@ export default function Photo({
         style={{ visibility: takenPhoto ? "visible" : "hidden" }}
       >
         <canvas id="canvas" ref={canvasRef} height="480" width="640"></canvas>
-        {takenPhoto && <button onClick={handleSaveImage}>Save</button>}
-        <button className="primary">capture new moment</button>
+
+        {/* switch views back */}
+        <button className="primary" onClick={handleCaptureNew}>
+          Capture new moment!
+        </button>
       </div>
     </section>
   );

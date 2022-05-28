@@ -8,9 +8,11 @@ export default function Gallery({ setImages }) {
 
   return (
     <div>
-      <Link to="/">
-        <img src="logo.png" alt="nav" width="50px" />
-      </Link>
+      <section className="nav">
+        <Link to="/">
+          <img src="logo.png" alt="nav" width="50px" />
+        </Link>
+      </section>
 
       <section>
         <section id="gallery">

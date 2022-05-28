@@ -10,11 +10,31 @@ function App() {
   const [hideApp, setHideApp] = useState(false);
   const [notisBtn, SetNotisBtn] = useState(true);
   const [permission, SetPermission] = useState(false);
+  const [itemsInJSONBin, setItemsInJSONBin] = useState([]);
   let itemsInLocalstorage = JSON.parse(localStorage.getItem("cameraApp"));
-  const [images, setImages] = useState(
-    itemsInLocalstorage?.length > 0 ? itemsInLocalstorage : []
-  );
-  console.log(images);
+  let startValues = [];
+  const [images, setImages] = useState(startValues ? startValues : []);
+  const [isOnline, setIsOnline] = useState(false);
+
+  window.addEventListener("online", (event) => {
+    setIsOnline(true);
+    console.log("ONLINE");
+    startValues = itemsInJSONBin;
+  });
+
+  window.addEventListener("offline", (event) => {
+    setIsOnline(false);
+    console.log("OFFLINE");
+    startValues = itemsInLocalstorage;
+  });
+  console.log(isOnline);
+
+  console.log(startValues);
+
+  // setImages(itemsInLocalstorage?.length > 0 ? itemsInLocalstorage : []);
+  // } else {
+  //   setImages(itemsInJSONBin?.length > 0 ? itemsInJSONBin : []);
+  // }
 
   function createNotification() {
     const text = "image has been saved!";
@@ -32,7 +52,6 @@ function App() {
 
   function handleNotificationPermission() {
     Notification.requestPermission().then((permission) => {
-      // console.log(permission);
       if (permission === "granted") {
         SetPermission(true);
       }
@@ -70,6 +89,8 @@ function App() {
                 createNotification={createNotification}
                 images={images}
                 setImages={setImages}
+                setItemsInJSONBin={setItemsInJSONBin}
+                isOnline={isOnline}
               />
             }
           ></Route>

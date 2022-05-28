@@ -8,6 +8,7 @@ export default function Home({
   setCaptured,
   images,
   setImages,
+  setItemsInJSONBin,
 }) {
   const [imageIsSaved, SetImageIsSaved] = useState(false);
 
@@ -25,6 +26,7 @@ export default function Home({
         setCaptured={setCaptured}
         images={images}
         setImages={setImages}
+        setItemsInJSONBin={setItemsInJSONBin}
       />
     </div>
   );

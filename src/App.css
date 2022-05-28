@@ -1,83 +1,21 @@
+/* allmänt *** */
+/* <MOBIL VY>  */
+
 .App {
   text-align: center;
   background-color: #252424;
   font-family: "Noto Sans", sans-serif;
-  min-height: 100vh;
+  min-height: 100%;
   letter-spacing: 5px;
   color: white;
   margin-left: auto;
   margin-right: auto;
   position: absolute;
   width: 100%;
+  padding-top: 15px;
 }
 
-.intro {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-self: center;
-  align-items: center;
-  flex-direction: column;
-  position: absolute;
-  top: 30%;
-}
-
-.capture {
-  z-index: 2;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  left: 25px;
-  top: 10;
-}
-
-.snap {
-  z-index: 0;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  max-width: 90%;
-  align-items: center;
-  padding: 10px;
-  margin: 0px;
-}
-
-.header {
-  align-self: flex-start;
-
-  z-index: 0;
-  position: absolute;
-  display: flex;
-}
-
-.nav {
-  max-width: 95%;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.delete {
-  border-radius: 50%;
-  border: none;
-  max-width: 30px;
-  max-height: 30px;
-  position: absolute;
-  padding: 0px;
-  display: flex;
-  right: 0%;
-}
-
-.img-display {
-  width: 90%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-around;
-  margin-left: auto;
-  margin-right: auto;
-}
+/* notisknapp */
 
 .notis--btn--on {
   background-color: #252424;
@@ -95,6 +33,36 @@
   color: white;
 }
 
+/* header med notis-knapp */
+
+.header {
+  align-self: flex-start;
+  position: absolute;
+  display: flex;
+}
+
+/* container för knapp till galleri / startsida */
+
+.nav {
+  max-width: 95%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* intro sidan med logga */
+.intro {
+  top: 30%;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  flex-direction: column;
+  position: fixed;
+}
+
+/* primära knapp -> ta kort och capture nytt moment */
+
 .primary {
   background-color: rgb(255, 255, 255);
   font-family: "Noto Sans", sans-serif;
@@ -109,14 +77,7 @@
   padding: 0px 100px;
 }
 
-#camera {
-  margin: 100px auto auto auto;
-  max-width: 90%;
-  min-width: 60%;
-  max-height: 90%;
-}
-
-/* Gallery */
+/* Gallery *** */
 
 #gallery {
   display: grid;
@@ -126,7 +87,84 @@
   width: 90%;
 }
 
-.home {
+/* knapp för att radera bilder från galleriet */
+
+.delete {
+  border-radius: 50%;
+  border: none;
+  max-width: 30px;
+  max-height: 30px;
+  position: absolute;
+  padding: 0px;
+  display: flex;
+  right: 0%;
+}
+
+/* container av bilder i galleriet */
+
+.img-display {
   width: 90%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Home *** */
+
+/* sidan som visar bilden man tagit  */
+
+.capture {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 80%;
+  top: 10;
+}
+
+/* sidan med cameran */
+
+.snap {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  align-items: center;
+  padding: 10px;
   margin: 0px;
+}
+
+/* camera och capture container*/
+
+.snapAndCapContainer {
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Kamera */
+
+#camera {
+  margin: 100px auto auto auto;
+  max-width: 90%;
+  min-width: 60%;
+  max-height: 90%;
+}
+
+@media screen and (min-width: 680px) {
+  /* Gallery *** */
+
+  #gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 10px;
+    gap: 20px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+  }
 }

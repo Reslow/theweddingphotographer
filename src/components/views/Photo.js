@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 // import ImageElement from "../ImagesElement";
-// import FilterControl from "../Filtercontrol";
 
 export default function Photo({
   SetImageIsSaved,
@@ -8,11 +7,15 @@ export default function Photo({
   createNotification,
   images,
   setImages,
+  setItemsInJSONBin,
+  isOnline,
 }) {
   const videoReference = useRef();
   const canvasRef = useRef();
-  // const [selectedBtn, setSelectedBtn] = useState(null);
   const [takenPhoto, setTakenPhoto] = useState(false);
+  const [currentImage, setCurrentImage] = useState("");
+  const API_KEY_JSON_BIN =
+    "$2b$10$x2BMUJLMX7kIpkqMhEdg6e/ElCz1IilxZteD2TusAeiSUaItebbE2";
 
   useEffect(() => {
     if ("mediaDevices" in navigator) {
@@ -23,21 +26,10 @@ export default function Photo({
     setTakenPhoto(false);
   }, []);
 
-  // const [value, setValue] = useState({
-  //   contrast: null,
-  //   saturate: null,
-  //   hue: null,
-  //   brightness: null,
-  //   none: "none",
-  // });
-
   function handleTakeAPhoto() {
     let video = videoReference.current;
     let ctx = canvasRef.current.getContext("2d");
     console.log(ctx);
-
-    // video.addEventListener("load", (e) => {
-    // ctx.filter = `contrast(${value.contrast}%) saturate(${value.saturate}%) hue-rotate(${value.hue}deg) brightness(${value.brightness}%)`;
 
     ctx.drawImage(
       video,
@@ -46,7 +38,6 @@ export default function Photo({
       canvasRef.current.height,
       canvasRef.current.width
     );
-    // });
 
     const imageData = canvasRef.current?.toDataURL("image/png");
     console.log(imageData);
@@ -58,61 +49,74 @@ export default function Photo({
     });
     setImages(images);
     setTakenPhoto(true);
+    setCurrentImage({
+      id: images.length,
+      image: imageData,
+    });
 
     setImages(JSON.parse(localStorage.getItem("cameraApp")));
     localStorage.setItem("cameraApp", JSON.stringify(images));
     SetImageIsSaved(true);
 
     if (permission) {
-      console.log("create");
       createNotification();
     }
   }
 
   function handleCaptureNew() {
+    console.log("new capture");
     setTakenPhoto(false);
   }
 
+  async function getSavedImages() {
+    const response = await fetch(
+      "https://api.jsonbin.io/b/6291234a402a5b380210cf08/latest",
+      {
+        headers: {
+          "X-master-Key": API_KEY_JSON_BIN,
+        },
+      }
+    );
+    const data = await response.json();
+    return data.images;
+  }
+
+  async function updateSavedImages() {
+    const imagesarr = await getSavedImages();
+
+    imagesarr.push(currentImage);
+
+    const response = await fetch(
+      "https://api.jsonbin.io/b/6291234a402a5b380210cf08",
+      {
+        method: "PUT",
+        body: JSON.stringify({ images: [currentImage] }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-master-Key": API_KEY_JSON_BIN,
+        },
+      }
+    );
+    const data = await response.json();
+    setItemsInJSONBin(data);
+  }
+
+  if (isOnline) {
+    updateSavedImages();
+  }
+
   return (
-    <section>
+    <section className="snapAndCapContainer">
       <div
         className="snap"
         style={{ visibility: takenPhoto ? "hidden" : "visible" }}
       >
-        {/* <section> */}
-        {/* <div
-            style={{
-              filter: `contrast(${value.contrast}%)`,
-            }}
-          > */}
-        {/* <div
-              style={{
-                filter: `saturate(${value.saturate}%)`,
-              }}
-              >
-              <div
-              style={{
-                filter: `hue-rotate(${value.hue}deg)`,
-              }}
-              >
-              <div
-              style={{
-                filter: `brightness(${value.brightness}%)`,
-              }}
-            > */}
-        <video src="" id="camera" autoPlay ref={videoReference}></video>
-        {/* </div>
-              </div>
-              </div>
-              </div>
-            </section> */}
+        <section>
+          <div>
+            <video src="" id="camera" autoPlay ref={videoReference}></video>
+          </div>
+        </section>
 
-        {/* <FilterControl
-          selectedBtn={selectedBtn}
-          setSelectedBtn={setSelectedBtn}
-          value={value}
-          setValue={setValue}
-        ></FilterControl> */}
         <button className="primary" onClick={handleTakeAPhoto}>
           Ta kort
         </button>

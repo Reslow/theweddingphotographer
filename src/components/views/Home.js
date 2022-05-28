@@ -9,6 +9,7 @@ export default function Home({
   images,
   setImages,
   setItemsInJSONBin,
+  itemsInJSONBin,
 }) {
   const [imageIsSaved, SetImageIsSaved] = useState(false);
 
@@ -17,7 +18,6 @@ export default function Home({
       <Link to="/gallery" className="nav">
         <img src="/gallery.svg" alt="nav" />
       </Link>
-
       <Photo
         SetImageIsSaved={SetImageIsSaved}
         ImageIsSaved={imageIsSaved}
@@ -27,6 +27,7 @@ export default function Home({
         images={images}
         setImages={setImages}
         setItemsInJSONBin={setItemsInJSONBin}
+        itemsInJSONBin={itemsInJSONBin}
       />
     </div>
   );

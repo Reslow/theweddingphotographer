@@ -14,23 +14,17 @@ function App() {
   let itemsInLocalstorage = JSON.parse(localStorage.getItem("cameraApp"));
   let startValues = [];
   const [images, setImages] = useState(startValues ? startValues : []);
-  const [isOnline, setIsOnline] = useState(false);
+  // const [isOnline, setIsOnline] = useState(false);
 
-  window.addEventListener("online", (event) => {
-    setIsOnline(true);
+  if (navigator.onLine) {
     console.log("ONLINE");
     startValues = itemsInJSONBin;
-  });
-
-  window.addEventListener("offline", (event) => {
-    setIsOnline(false);
-    console.log("OFFLINE");
+    console.log(startValues);
+  } else {
+    console.log("OFF");
     startValues = itemsInLocalstorage;
-  });
-  console.log(isOnline);
-
-  console.log(startValues);
-
+    console.log(startValues);
+  }
   // setImages(itemsInLocalstorage?.length > 0 ? itemsInLocalstorage : []);
   // } else {
   //   setImages(itemsInJSONBin?.length > 0 ? itemsInJSONBin : []);
@@ -90,7 +84,7 @@ function App() {
                 images={images}
                 setImages={setImages}
                 setItemsInJSONBin={setItemsInJSONBin}
-                isOnline={isOnline}
+                // isOnline={isOnline}
               />
             }
           ></Route>

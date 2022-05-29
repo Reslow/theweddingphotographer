@@ -2,10 +2,7 @@ import { Link } from "react-router-dom";
 
 import ImageElement from "../ImagesElement";
 
-export default function Gallery({ setImages }) {
-  let images = JSON.parse(localStorage.getItem("cameraApp"));
-  console.log(images);
-
+export default function Gallery({ setImages, images }) {
   return (
     <div>
       <section className="nav">
@@ -16,8 +13,8 @@ export default function Gallery({ setImages }) {
 
       <section>
         <section id="gallery">
-          {images.length > 0
-            ? images.map((image, index) => {
+          {images.images?.length > 0
+            ? images.images.map((image, index) => {
                 return (
                   <ImageElement
                     image={image.image}

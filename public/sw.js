@@ -17,7 +17,7 @@ self.addEventListener("activate", () => {
 // kolla om jag är online eller offline
 
 self.addEventListener("fetch", async (event) => {
-  console.log(event.request.url);
+  // console.log(event.request.url);
 
   if (!navigator.onLine) {
     console.log("offline");

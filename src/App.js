@@ -14,24 +14,15 @@ function App() {
   let itemsInLocalstorage = JSON.parse(localStorage.getItem("cameraApp"));
   let startValues = [];
   const [images, setImages] = useState(startValues ? startValues : []);
-  // const [isOnline, setIsOnline] = useState(false);
 
   if (navigator.onLine) {
-    console.log("ONLINE");
     startValues = itemsInJSONBin;
     console.log(startValues);
   } else {
-    console.log("OFF");
     startValues = itemsInLocalstorage;
-    console.log(startValues);
   }
-  // setImages(itemsInLocalstorage?.length > 0 ? itemsInLocalstorage : []);
-  // } else {
-  //   setImages(itemsInJSONBin?.length > 0 ? itemsInJSONBin : []);
-  // }
 
-  function createNotification() {
-    const text = "image has been saved!";
+  function createNotification(text) {
     new Notification("Notis", { body: text });
   }
 
@@ -39,7 +30,6 @@ function App() {
     SetNotisBtn(!notisBtn);
 
     if (notisBtn === true) {
-      console.log("btn");
       handleNotificationPermission();
     }
   }
@@ -84,13 +74,12 @@ function App() {
                 images={images}
                 setImages={setImages}
                 setItemsInJSONBin={setItemsInJSONBin}
-                // isOnline={isOnline}
               />
             }
           ></Route>
           <Route
             path="/gallery"
-            element={<Gallery setImages={setImages} />}
+            element={<Gallery setImages={setImages} images={images} />}
           ></Route>
         </Routes>
       )}

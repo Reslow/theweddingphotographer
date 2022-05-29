@@ -2,7 +2,7 @@ export default function ImageElement({ image, images, setImages }) {
   // console.log(images);
 
   function handleRemoveImage() {
-    let newImageArr = images.filter((img) => img.image !== image);
+    let newImageArr = images.images.filter((img) => img.image !== image);
     setImages(newImageArr);
     localStorage.setItem("cameraApp", JSON.stringify(newImageArr));
   }

@@ -10,6 +10,9 @@ export default function Home({
   setImages,
   setItemsInJSONBin,
   itemsInJSONBin,
+  updateSavedImages,
+  currentImage,
+  setCurrentImage,
 }) {
   const [imageIsSaved, SetImageIsSaved] = useState(false);
 
@@ -28,6 +31,9 @@ export default function Home({
         setImages={setImages}
         setItemsInJSONBin={setItemsInJSONBin}
         itemsInJSONBin={itemsInJSONBin}
+        currentImage={currentImage}
+        setCurrentImage={setCurrentImage}
+        updateSavedImages={updateSavedImages}
       />
     </div>
   );

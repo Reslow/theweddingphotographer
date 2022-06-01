@@ -13,14 +13,14 @@ root.render(
   </React.StrictMode>
 );
 
-// regga sw
+// register SW
 
 async function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
     try {
       await navigator.serviceWorker.register("sw.js");
     } catch (error) {
-      console.log("så man kan göra , men fel fel fel", error);
+      console.log("Error", error);
     }
   }
 }

@@ -7,13 +7,13 @@ export default function Photo({
   images,
   setImages,
   setItemsInJSONBin,
+  updateSavedImages,
+  currentImage,
+  setCurrentImage,
 }) {
   const videoReference = useRef();
   const canvasRef = useRef();
   const [takenPhoto, setTakenPhoto] = useState(false);
-  const [currentImage, setCurrentImage] = useState("");
-  const API_KEY_JSON_BIN =
-    "$2b$10$x2BMUJLMX7kIpkqMhEdg6e/ElCz1IilxZteD2TusAeiSUaItebbE2";
 
   useEffect(() => {
     if ("mediaDevices" in navigator) {
@@ -21,26 +21,7 @@ export default function Photo({
         videoReference.current.srcObject = stream;
       });
     }
-    async function getSavedImages() {
-      const response = await fetch(
-        "https://api.jsonbin.io/b/6293d219402a5b3802138cd6",
-        {
-          headers: {
-            "X-Master-Key": API_KEY_JSON_BIN,
-          },
-        }
-      );
-      const data = await response.json();
-
-      setImages(data.images);
-      return data.images;
-    }
-    setTakenPhoto(false);
-    if (navigator.onLine) {
-      getSavedImages();
-    }
-  }, [setImages, setItemsInJSONBin]);
-  console.log(`checking if we have image ${JSON.stringify(images)}`);
+  }, [setImages, images, setItemsInJSONBin]);
 
   function handleTakeAPhoto() {
     let video = videoReference.current;
@@ -54,7 +35,6 @@ export default function Photo({
     );
 
     const imageData = canvasRef.current?.toDataURL("image/png");
-    console.log(images);
 
     images.push({
       id: images.length,
@@ -64,52 +44,24 @@ export default function Photo({
     setImages(images);
 
     setTakenPhoto(true);
+
     setCurrentImage({
       id: images.length,
       image: imageData,
     });
+    updateSavedImages(currentImage);
 
-    if (navigator.onLine) {
-      updateSavedImages(images, currentImage);
-      if (permission) {
-        const text = "img is saved to jsonBin";
-        createNotification(text);
-      }
-    } else {
-      const text = "img is saved to localstorage";
-      localStorage.setItem("cameraApp", JSON.stringify(images));
-      setImages(JSON.parse(localStorage.getItem("cameraApp")));
-      if (permission) {
-        createNotification(text);
-      }
+    const text = "img is saved to localstorage";
+    localStorage.setItem("cameraApp", JSON.stringify(images));
+
+    setImages(JSON.parse(localStorage.getItem("cameraApp")));
+    if (permission) {
+      createNotification(text);
     }
   }
 
   function handleCaptureNew() {
     setTakenPhoto(false);
-  }
-
-  async function updateSavedImages(images, currentImage) {
-    console.log(currentImage);
-    console.log(
-      `this is IMG arr  after push of new arr${JSON.stringify(images)}}`
-    );
-    images.push(currentImage);
-    console.log(images);
-    const response = await fetch(
-      "https://api.jsonbin.io/b/6293d219402a5b3802138cd6",
-      {
-        method: "PUT",
-        body: JSON.stringify({ images: images }),
-        headers: {
-          "Content-Type": "application/json",
-          "X-Master-Key": API_KEY_JSON_BIN,
-        },
-      }
-    );
-    const data = await response.json();
-    setItemsInJSONBin(data.data);
-    setImages(data.data);
   }
 
   return (
@@ -133,7 +85,7 @@ export default function Photo({
         className="capture"
         style={{ visibility: takenPhoto ? "visible" : "hidden" }}
       >
-        <canvas id="canvas" ref={canvasRef} height="200" width="400"></canvas>
+        <canvas id="canvas" ref={canvasRef} height="480" width="400"></canvas>
 
         {/* switch views back */}
         <button className="primary" onClick={handleCaptureNew}>

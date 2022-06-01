@@ -1,8 +1,9 @@
 /* eslint-disable no-restricted-globals */
+// listen for SW installed and save files to cache
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open("v1").then((cache) => {
-      return cache.addAll(["offline.html", "app.css", "index.css"]);
+      return cache.addAll(["/offline.html", "app.css", "index.css"]);
     })
   );
   self.skipWaiting();
@@ -14,30 +15,26 @@ self.addEventListener("activate", () => {
   console.log("sw activated", new Date().toLocaleTimeString());
 });
 
-// kolla om jag är online eller offline
-
+// listen for fetches, checking if its a GET method and if I am offline.
+// when offline check cache for matching file or send request for offline.html.
+// if online I update cache
 self.addEventListener("fetch", async (event) => {
-  // console.log(event.request.url);
-
-  if (!navigator.onLine) {
-    console.log("offline");
-    if (event.request === "GET") {
+  if (event.request.method === "GET") {
+    if (!navigator.onLine) {
       event.respondWith(
         caches.match(event.request).then((response) => {
-          console.log("response", response);
           if (response) {
             return response;
           } else {
-            return caches.match(new Request("offline.html"));
+            return caches.match(new Request("/offline.html"));
           }
         })
       );
     } else {
-      console.log("online");
       const response = await updateCache(event.request);
       return response;
     }
-  } else return;
+  }
 });
 
 async function updateCache(request) {
